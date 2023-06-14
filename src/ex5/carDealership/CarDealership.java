@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,12 +18,34 @@ enum menu{
  * Represents a car dealership program.
  */
 public class CarDealership {
+    public static void printcar(ArrayList cars){
+        System.out.println("display the vehicles in the dealership that have not been sold");
+        for (int i = 0; i < cars.size(); i++) {
+            System.out.println(cars.get(i));
+        }
+    }
+    public static void printemployee(ArrayList employees){
+        System.out.println("display the list of employees in the store");
+        for (int i = 0; i < employees.size(); i++) {
+            System.out.println(employees.get(i));
+        }
+    }
+    public static void printmenu(){
+        System.out.println("Menu:");
+        System.out.println("To display the list of employees in the store, click 1");
+        System.out.println("To display the vehicles in the dealership that have not been sold, click 2");
+        System.out.println("To sell a car, click 3");
+        System.out.println("To add a vehicle to the agency, click 4");
+        System.out.println("To finish the program click, 5");
+    }
+
     /**
      * The main entry point of the program.
      *
      * @param args command-line arguments
      * @throws Exception if an error occurs during program execution
      */
+
     public static void main(String[] args) throws Exception {
         Scanner in = new Scanner(System.in);
         Scanner st = new Scanner(System.in);
@@ -32,8 +55,8 @@ public class CarDealership {
         Path employeePath;
         FileWriter w = new FileWriter(filePath);
         try {
-            employeePath = Paths.get("C:\\Users\\97258\\Downloads\\Employee.txt.txt");
-            carPath = Paths.get("C:\\Users\\97258\\Downloads\\CarDealership.txt.txt");
+            employeePath = Paths.get("C:\\Users\\97258\\IdeaProjects\\ex5.java\\src\\Employee.txt.txt");
+            carPath = Paths.get("C:\\Users\\97258\\IdeaProjects\\ex5.java\\src\\CarDealership.txt.txt");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -57,17 +80,11 @@ public class CarDealership {
         }
         System.out.println(employees);
         while (true) {
-            System.out.println("Menu:");
-            System.out.println("To display the list of employees in the store, click 1");
-            System.out.println("To display the vehicles in the dealership that have not been sold, click 2");
-            System.out.println("To sell a car, click 3");
-            System.out.println("To add a vehicle to the agency, click 4");
-            System.out.println("To finish the program click, 5");
+           printmenu();
             int num = in.nextInt();
             menu select=menu.values()[num-1];
             switch (select) {
                 case EMPLOYEE:
-
                     for (int i = employees.size() - 1; i > 0; i--) {
                         for (int j = 0; j < i; j++) {
                             if (employees.get(j).compareTo(employees.get(j + 1)) > 0) {
@@ -77,29 +94,19 @@ public class CarDealership {
                             }
                         }
                     }
-                    System.out.println("display the list of employees in the store");
-
-                    for (int i = 0; i < employees.size(); i++) {
-                        System.out.println(employees.get(i));
-                    }
+                    printemployee(employees);
                     break;
                 case CAR:
-                    System.out.println("display the vehicles in the dealership that have not been sold");
-                    for (int i = 0; i < cars.size(); i++) {
-                        System.out.println(cars.get(i));
-                    }
+                    printcar(cars);
                     break;
                 case SALE:
                     System.out.println("sell a car");
-                    for (int i = 0; i < employees.size(); i++) {
-                        System.out.println(employees.get(i));
-                    }
+                    printemployee(employees);
                     Boolean flag = false;
                     Boolean flag2 = false;
                     while (!flag) {
                         System.out.println("Enter your ID number");
                         try {
-
                             String id = st.nextLine();
                             for (int i = 0; i < employees.size(); i++) {
                                 if (id.equals(employees.get(i).id)) {
@@ -151,9 +158,10 @@ public class CarDealership {
                     break;
                 case END:
                     System.out.println("finish the program...");
+                    Files.write(carPath, "".getBytes());
                     for (int i = 0; i < cars.size(); i++) {
                         String c=cars.get(i).toString();
-                        Files.write(carPath, c.getBytes());
+                        Files.writeString(carPath,c+"\n",StandardOpenOption.APPEND);
                     }
                     return;
                 default:

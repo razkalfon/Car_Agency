@@ -96,6 +96,7 @@ public class Car {
      */
     @Override
     public String toString() {
-        return "numOfCar: " + numOfCar + " ,year: " + year + " ,name: " + name + " ,km: " + km + " ,price: " + price;
+        return numOfCar + " "+ year + " "+ name + " " + km + " " + price;
+
     }
 }
