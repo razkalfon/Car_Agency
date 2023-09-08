@@ -1,6 +1,5 @@
 package ex5.carDealership;
 
-
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
@@ -17,7 +16,10 @@ enum menu{
 /**
  * Represents a car dealership program.
  */
+
 public class CarDealership {
+    public static Scanner in= new Scanner(System.in);
+    public static Scanner st= new Scanner(System.in);
     public static void printcar(ArrayList cars){
         System.out.println("display the vehicles in the dealership that have not been sold");
         for (int i = 0; i < cars.size(); i++) {
@@ -38,7 +40,18 @@ public class CarDealership {
         System.out.println("To add a vehicle to the agency, click 4");
         System.out.println("To finish the program click, 5");
     }
-
+        public static void sort( ArrayList<Employee>employees ) {
+            for (int i = employees.size() - 1; i > 0; i--) {
+                for (int j = 0; j < i; j++) {
+                    if (employees.get(j).compareTo(employees.get(j + 1)) > 0) {
+                        Employee e = employees.get(j);
+                        employees.set(j, employees.get(j + 1));
+                        employees.set(j + 1, e);
+                    }
+                }
+            }
+        }
+        public static void sellcar(ArrayList <Employee>employees,ArrayList<Car>cars,File filePath,Path carPath,Path employeePath){}
     /**
      * The main entry point of the program.
      *
@@ -47,9 +60,6 @@ public class CarDealership {
      */
 
     public static void main(String[] args) throws Exception {
-        Scanner in = new Scanner(System.in);
-        Scanner st = new Scanner(System.in);
-        Scanner sl = new Scanner(System.in);
         File filePath = new File("Sold.txt");
         Path carPath;
         Path employeePath;
@@ -85,15 +95,7 @@ public class CarDealership {
             menu select=menu.values()[num-1];
             switch (select) {
                 case EMPLOYEE:
-                    for (int i = employees.size() - 1; i > 0; i--) {
-                        for (int j = 0; j < i; j++) {
-                            if (employees.get(j).compareTo(employees.get(j + 1)) > 0) {
-                                Employee e = employees.get(j);
-                                employees.set(j, employees.get(j + 1));
-                                employees.set(j + 1, e);
-                            }
-                        }
-                    }
+                    sort(employees);
                     printemployee(employees);
                     break;
                 case CAR:
@@ -117,7 +119,7 @@ public class CarDealership {
                                     while (!flag2) {
                                         System.out.println("Select the car number");
                                         try {
-                                            String numOfCar = sl.nextLine();
+                                            String numOfCar = st.nextLine();
                                             for (int x = 0; x < cars.size(); x++) {
                                                 if (numOfCar.equals(cars.get(x).getNumOfCar())) {
                                                     employees.get(i).sales++;
@@ -146,13 +148,15 @@ public class CarDealership {
                         System.out.println("Enter your year the car");
                         int year = in.nextInt();
                         System.out.println("Enter your name the car");
-                        String name = st.nextLine();
+                        String name = in.nextLine();
                         System.out.println("Enter your km the car");
                         int km = in.nextInt();
                         System.out.println("Enter your price the car");
                         int price = in.nextInt();
                         Car car = new Car(numCar, year, name, km, price);
                         cars.add(car);
+                        String caradd=cars.get(cars.size()-1).toString();
+                        Files.writeString(carPath,caradd+"\n",StandardOpenOption.APPEND);
                     } catch (Exception e) {
                     }
                     break;
